@@ -1,29 +1,27 @@
 import { NextResponse } from "next/server";
-import prisma from "@/lib/db"; // Import your Prisma instance
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
+import prisma from "@/lib/db";
 
 export async function GET(req: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    const userId = session?.user?.id; // معرف المستخدم الحالي
-
     const { searchParams } = new URL(req.url);
 
+    // Read query parameters
+    const userIdParam = searchParams.get("id");
     const type = searchParams.get("type") || "forYou"; // 'forYou' or 'user'
-    const page = parseInt(searchParams.get("page") || "1");
-    const limit = parseInt(searchParams.get("limit") || "10");
+    const page = Number(searchParams.get("page")) || 1;
+    const limit = Number(searchParams.get("limit")) || 10;
     const offset = (page - 1) * limit;
 
-
+    // Set the condition based on type and userId
     const whereCondition =
-      userId && type === "user" ? { authorId: Number(userId) } : {};
+      userIdParam && type === "user" ? { authorId: Number(userIdParam) } : {};
 
+    // Fetch articles
     const articles = await prisma.article.findMany({
       where: whereCondition,
       skip: offset,
       take: limit,
-      orderBy: { createdAt: "desc" },
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
       include: {
         author: {
           select: {
@@ -37,9 +35,15 @@ export async function GET(req: Request) {
       },
     });
 
-    return NextResponse.json(articles || "NO USER");
+    // Handle empty results
+    if (!articles || articles.length === 0) {
+      return NextResponse.json([]);
+    }
+
+    // Return articles
+    return NextResponse.json(articles);
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching articles:", error);
     return NextResponse.json(
       { error: "Failed to fetch articles" },
       { status: 500 }

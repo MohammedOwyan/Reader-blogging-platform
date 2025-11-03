@@ -1,22 +1,31 @@
+"use client";
+
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import Tag from "./tag";
 import { ArticleComponentProps } from "@/types/types";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { forwardRef } from "react";
 
 const ArticleComponent = forwardRef<HTMLDivElement, ArticleComponentProps>(
   ({ article, ...props }, ref) => {
+    const router = useRouter();
     return (
       <div
         ref={ref}
         className="flex items-center h-96 py-8 border-b-2 border-gray-200 gap-6 cursor-pointer"
-        onClick={() => redirect(`/articles/${article.id}`)}
+        onClick={() => router.push(`/articles/${article.id}`)}
         {...props}
       >
         {/* الجزء الخاص بالمحتوى */}
         <div className="flex flex-col justify-between h-full flex-1">
-          <div className="flex">
+          <div
+            className="flex"
+            onClick={(e) => {
+              e.stopPropagation();
+              router.push(`/profile/${article.authorId}`);
+            }}
+          >
             <Avatar className="w-12 h-12 mr-4">
               <AvatarImage src={article.author.ProfilePictureUrl || "#"} />
               <AvatarFallback>
@@ -28,7 +37,9 @@ const ArticleComponent = forwardRef<HTMLDivElement, ArticleComponentProps>(
               <span className="block">
                 {article.author.firstName + " " + article.author.lastName}
               </span>
-              <span className="text-[15px] text-gray-500">{article.author.job}</span>
+              <span className="text-[15px] text-gray-500">
+                {article.author.job}
+              </span>
               {" . "}
               <span className="text-sm text-gray-500">
                 {new Date(article.createdAt).toLocaleDateString("en-US", {

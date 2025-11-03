@@ -3,7 +3,7 @@ import { Article, User } from "@prisma/client";
 import { ComponentPropsWithoutRef } from "react";
 
 export type SelectMenuProps = {
-    handleChange: (value: string) => void;
+    handleChange: (value: 'h1' | 'h2' | 'h3' | 'p') => void;
 };
 export type userState = {
     authenticated: boolean;

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import { Toaster } from 'react-hot-toast';
 
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -27,6 +28,7 @@ export default function RootLayout({
       >
         <AuthProvider>
         {children}
+        <Toaster position="bottom-right" reverseOrder={false}/>
         </AuthProvider>
       </body>
     </html>

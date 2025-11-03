@@ -20,12 +20,14 @@ export default function ArticlesSection() {
   const lastArticleRef = useRef<HTMLDivElement | null>(null);
 
   // 🔁 Fetch articles
-  async function fetchArticles(pageNum: number, filter: string) {
+  const fetchArticles = async function (pageNum: number, filter: string) {
     if (loading) return;
     setLoading(true);
 
     try {
-      const res = await fetch(`/api/articles?page=${pageNum}&limit=10&type=${filter}`);
+      const res = await fetch(
+        `/api/articles?page=${pageNum}&limit=10&type=${filter}`
+      );
       if (!res.ok) {
         console.error("Failed to fetch articles");
         setLoading(false);
@@ -39,8 +41,10 @@ export default function ArticlesSection() {
       } else {
         // 🧩 تأكد من عدم التكرار
         setArticles((prev) => {
-          const ids = new Set(prev.map((a) => a.id));
-          const unique = newArticles.filter((a: Article) => !ids.has(a.id));
+          const ids = new Set(prev.map((a) => String(a.id)));
+          const unique = newArticles.filter(
+            (a: Article) => !ids.has(String(a.id))
+          );
           return [...prev, ...unique];
         });
       }
@@ -54,6 +58,8 @@ export default function ArticlesSection() {
   // 📡 لما الصفحة تتغير
   useEffect(() => {
     fetchArticles(page, selectedValue);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, selectedValue]);
 
   // 🔁 لما المستخدم يغير الفلتر، نعيد التحميل من أول
@@ -86,7 +92,10 @@ export default function ArticlesSection() {
       <div className="flex justify-between mt-12 pb-10 border-b-2 border-gray-200">
         <h1 className="capitalize font-semibold text-2xl">Articles</h1>
 
-        <Select value={selectedValue} onValueChange={(value) => setSelectedValue(value)}>
+        <Select
+          value={selectedValue}
+          onValueChange={(value) => setSelectedValue(value)}
+        >
           <SelectTrigger className="w-[180px] outline-none">
             <SelectValue>{selectedValue}</SelectValue>
           </SelectTrigger>
@@ -110,7 +119,9 @@ export default function ArticlesSection() {
           }
         })}
 
-        {loading && <p className="text-center my-4">Loading more articles...</p>}
+        {loading && (
+          <p className="text-center my-4">Loading more articles...</p>
+        )}
         {!hasMore && !loading && (
           <p className="text-center my-4 text-gray-500">No more articles</p>
         )}

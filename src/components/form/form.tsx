@@ -13,6 +13,7 @@ import validator from "validator";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
+import toast from "react-hot-toast";
 
 function Form() {
   const router = useRouter();
@@ -97,8 +98,13 @@ function Form() {
       });
 
       const data = await response.json();
+
+      console.log(data);
+      
       if (data.success) {
         router.push("/");
+      }else if(response.status === 409){
+        toast.error("User already exist")
       } else {
         setFormErrors(prev => ({ ...prev, recaptcha: "Signup failed. reCAPTCHA verification failed." }));
       }

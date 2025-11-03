@@ -86,7 +86,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               height={200}
             />
           </div>
-          <div dangerouslySetInnerHTML={{ __html: safeHTML }} />
+          <div className="mt-20" dangerouslySetInnerHTML={{ __html: safeHTML }} />
         </div>
       </main>
     </div>

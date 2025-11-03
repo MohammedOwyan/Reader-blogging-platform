@@ -1,13 +1,12 @@
 "use client";
 
 
-import React from "react";
 import { Button } from "../ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
 import { faBell, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Input } from "../ui/input";
 import Image from "next/image";
 import { Dropdown } from "@/components/header/dropdownmenu";
@@ -16,16 +15,17 @@ import { useSession } from "next-auth/react";
 
 
 
+
 export default function NavigationBar() {
 
   const { data: session } = useSession();
+  const router = useRouter()
   const isAuth = !!session;
   console.log(session)
   return (
     <nav className="flex bg-white flex-row justify-between items-center px-12 py-5 border-b border-gray-300">
       <div className="flex gap-20 w-1/2">
-
-        <Image src={"/logo.svg"} alt="" width={150} height={50}></Image>
+          <Image src={"/logo.svg"} alt="" width={150} height={50} className="cursor-pointer" onClick={() => router.push("/")}/>
         <div className='flex items-center h-12 w-80 border border-solid border-gray-300 rounded-full'>
           <Button style={{ borderRadius: "30px 0 0 30px", height: "100%" }} variant={"ghost"} >
             <FontAwesomeIcon icon={faMagnifyingGlass} className='text-gray-600' />
@@ -58,7 +58,7 @@ export default function NavigationBar() {
           </SignInDialog>
         }
 
-        <Button variant={"outline"} size={"default"} onClick={() => redirect('/write')}>
+        <Button variant={"outline"} size={"default"} onClick={() => router.push('/write')}>
           <FontAwesomeIcon icon={faPenToSquare} />
           <span className="font-semibold">{" "}Write</span>
         </Button>

@@ -1,23 +1,15 @@
-import prisma from '@/lib/db' 
+import prisma from "@/lib/db";
+import { User } from "@prisma/client";
 
-export async function getUserById(id: string) {
-    try {
-        const user = await prisma.user.findUnique({
-            where: { id: Number(id) },
-            select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                email: true,
-                ProfilePictureUrl: true,
-                bio:true,
-                job:true
-            }
-        });
+export async function getUserById(id: string): Promise<User | null> {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: Number(id) },
+    });
 
-        return user;
-    } catch (error) {
-        console.error('Error fetching user:', error);
-        return null;
-    }
+    return user;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null;
+  }
 }
