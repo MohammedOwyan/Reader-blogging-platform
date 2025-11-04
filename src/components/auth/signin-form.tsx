@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ReactNode } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -22,7 +22,7 @@ export function SignInDialog({ children }: { children: ReactNode }) {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const router = useRouter();
-    const session = useSession();
+    // const session = useSession();
 
 
     const handleLogin = async () => {
@@ -80,7 +80,7 @@ export function SignInDialog({ children }: { children: ReactNode }) {
                             <Button
                                 variant="link"
                                 className="text-black underline text-sm"
-                                onClick={() => router.push("/forgot-password")}
+                                // onClick={() => router.push("/forgot-password")}
                             >
                                 Forgot password?
                             </Button>
