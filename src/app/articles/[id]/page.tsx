@@ -24,7 +24,7 @@ export async function generateMetadata({
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
-  const { id } = await params;
+  const { id } =  params;
 
   // Fetch article from database
   const article = await GetArticle(Number(id));
