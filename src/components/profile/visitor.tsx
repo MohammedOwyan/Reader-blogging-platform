@@ -6,6 +6,8 @@ import ArticleComponent from "../custom/article";
 import { headers } from "next/headers";
 import { ArticleData } from "@/types/types";
 
+export const dynamic = "force-dynamic";
+
 export default async function Visitor({ pageOwner }: { pageOwner: User }) {
   // 🧩 Fetch user's articles (server-side)
 
@@ -13,7 +15,8 @@ export default async function Visitor({ pageOwner }: { pageOwner: User }) {
   const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 
   const res = await fetch(
-    `${protocol}://${host}/api/articles?type=user&id=${pageOwner.id}`
+    `${protocol}://${host}/api/articles?type=user&id=${pageOwner.id}`,
+    {cache: "no-store"}
   );
 
   const articles = await res.json();
