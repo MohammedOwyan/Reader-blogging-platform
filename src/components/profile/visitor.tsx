@@ -6,6 +6,7 @@ import ArticleComponent from "../custom/article";
 import { ArticleData } from "@/types/types";
 
 export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 export const revalidate = 0;
 
 export default async function Visitor({ pageOwner }: { pageOwner: User }) {
