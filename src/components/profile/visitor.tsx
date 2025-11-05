@@ -12,13 +12,17 @@ export const revalidate = 0;
 export default async function Visitor({ pageOwner }: { pageOwner: User }) {
   // 🧩 Fetch user's articles (server-side)
 
-  const host = (await headers()).get("host");
-  const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 
-  const res = await fetch(
-    `${protocol}://${host}/api/articles?type=user&id=${pageOwner.id}`,
-    {cache: "no-store"}
-  );
+const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_BASE_URL // ضيفها في الـ env
+    : "http://localhost:3000";
+
+const res = await fetch(
+  `${baseUrl}/api/articles?type=user&id=${pageOwner.id}`,
+  { cache: "no-store" }
+);
+
 
   const articles = await res.json();
 
