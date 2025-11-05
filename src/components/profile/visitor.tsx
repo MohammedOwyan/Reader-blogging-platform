@@ -7,6 +7,7 @@ import { headers } from "next/headers";
 import { ArticleData } from "@/types/types";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function Visitor({ pageOwner }: { pageOwner: User }) {
   // 🧩 Fetch user's articles (server-side)
