@@ -14,7 +14,7 @@ export default async function Visitor({ pageOwner }: { pageOwner: User }) {
 
 const baseUrl =
   process.env.NODE_ENV === "production"
-    ? process.env.NEXT_PUBLIC_URL // ضيفها في الـ env
+    ? process.env.NEXT_PUBLIC_URL || "https://reader-blogging-platform.vercel.app"
     : "http://localhost:3000";
 
 const res = await fetch(
