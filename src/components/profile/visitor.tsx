@@ -3,7 +3,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BriefcaseBusiness } from "lucide-react";
 import { User } from "@prisma/client";
 import ArticleComponent from "../custom/article";
-import { headers } from "next/headers";
 import { ArticleData } from "@/types/types";
 
 export const dynamic = "force-dynamic";
@@ -15,7 +14,7 @@ export default async function Visitor({ pageOwner }: { pageOwner: User }) {
 
 const baseUrl =
   process.env.NODE_ENV === "production"
-    ? process.env.NEXT_PUBLIC_BASE_URL // ضيفها في الـ env
+    ? process.env.NEXT_PUBLIC_URL // ضيفها في الـ env
     : "http://localhost:3000";
 
 const res = await fetch(
